@@ -1,15 +1,24 @@
 import "./App.css";
 import { useState, useCallback, useEffect } from "react";
 import CodeMirror from "@uiw/react-codemirror";
-import { dracula } from '@uiw/codemirror-theme-dracula';
-import { html } from '@codemirror/lang-html';
+import { dracula } from "@uiw/codemirror-theme-dracula";
+import { html } from "@codemirror/lang-html";
+import { color } from "@uiw/codemirror-extensions-color";
+import pretty from "pretty";
 
 export default function App() {
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState("");
 
-  const onChange = useCallback((value) => {
+  const onChange = (value) => {
     setCode(value);
-  }, []);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.shiftKey && event.altKey && event.key === "F") {
+      event.preventDefault();
+      setCode(pretty(code));
+    }
+  };
 
   useEffect(() => {
     const iframe = document.getElementById("preview");
@@ -30,7 +39,9 @@ export default function App() {
           width="50dvw"
           onChange={onChange}
           theme={dracula}
-          extensions={[html({ matchClosingTags: true })]}
+          indentWithTab={true}
+          extensions={[html({ matchClosingTags: true }), color]}
+          onKeyDown={handleKeyDown}
         />
       </div>
       <iframe

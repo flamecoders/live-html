@@ -22,7 +22,9 @@
   },
   "dependencies": {
     "@codemirror/lang-html": "^6.4.9",
+    "@uiw/codemirror-extensions-color": "^4.23.3",
     "@uiw/codemirror-theme-dracula": "^4.23.3",
-    "@uiw/react-codemirror": "^4.23.3"
+    "@uiw/react-codemirror": "^4.23.3",
+    "pretty": "^2.0.0"
   }
 }
