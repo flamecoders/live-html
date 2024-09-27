@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+#root {
+  display: flex;
+}
+
+#preview {
+  height: 100dvh;
+  width: 50dvw;
+}
