@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { dracula } from "@uiw/codemirror-theme-dracula";
 import { html } from "@codemirror/lang-html";
@@ -8,6 +8,7 @@ import pretty from "pretty";
 
 export default function App() {
   const [code, setCode] = useState("");
+  const [debouncedCode, setDebouncedCode] = useState("");
 
   const onChange = (value) => {
     setCode(value);
@@ -21,14 +22,23 @@ export default function App() {
   };
 
   useEffect(() => {
-    const iframe = document.getElementById("preview");
-    const iframeDocument =
-      iframe.contentDocument || iframe.contentWindow.document;
+    const timer = setTimeout(() => {
+      setDebouncedCode(code);
+    }, 2000);
 
-    iframeDocument.open();
-    iframeDocument.write(code);
-    iframeDocument.close();
+    return () => clearTimeout(timer);
   }, [code]);
+
+  useEffect(() => {
+    const iframe = document.getElementById("preview");
+
+    const blob = new Blob([debouncedCode], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+
+    iframe.src = url;
+
+    return () => URL.revokeObjectURL(url);
+  }, [debouncedCode]);
 
   return (
     <>
